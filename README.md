@@ -90,8 +90,70 @@ La plataforma coordina la comunicación entre todos los componentes permitiendo 
 
 # 🏗 Arquitectura del Sistema
 
-> *(Aquí posteriormente agregaremos un diagrama de arquitectura más profesional.)*
+```text
+                                 CleanBot-RCR
 
+                                  Usuario
+                                     │
+                                     ▼
+                           Interfaz Web (EJS)
+                                     │
+                                     ▼
+                          Node.js + Express.js
+                                     │
+               ┌─────────────────────┴─────────────────────┐
+               │                                           │
+               ▼                                           ▼
+       Base de Datos MySQL                         Comunicación Serial
+               │                                           │
+               ▼                                           ▼
+       Usuarios, Registros                           Arduino UNO
+       y Señaléticas                                       │
+                                                           │
+                         ┌─────────────────────────────────┼────────────────────────────┐
+                         ▼                                 ▼                            ▼
+                 Motor NEMA 17                     Motor NEMA 17                 Módulo Relé
+                (Movimiento X)                    (Movimiento Y)                    (5V)
+                         │                                 │                            │
+                         └───────────────┬─────────────────┘                            ▼
+                                         ▼                                       Hidrolavadora
+                                  Brazo Robótico
+                                         │
+                                         ▼
+                            Limpieza de Señalética
+
+                                     ESP32-CAM
+                                          │
+                                          ▼
+                              Lectura de Código QR
+                                          │
+                                          ▼
+                          Identificación de Señalética
+```
+
+### Flujo del Sistema
+
+1. La ESP32-CAM escanea el código QR de la señal.
+2. La aplicación web obtiene la información desde MySQL.
+3. El usuario selecciona la operación desde la interfaz.
+4. Node.js envía comandos al Arduino mediante comunicación serial.
+5. El Arduino controla los motores NEMA 17 y el módulo relé.
+6. La hidrolavadora ejecuta el proceso de limpieza.
+7. La actividad queda registrada en la base de datos.
+
+### Ficha Técnica
+
+| Componente | Tecnología |
+|------------|------------|
+| Frontend | EJS + Bootstrap |
+| Backend | Node.js + Express |
+| Base de Datos | MySQL |
+| Microcontrolador | Arduino UNO |
+| Cámara | ESP32-CAM |
+| Motores | 2x NEMA 17 |
+| Comunicación | Puerto Serial |
+| Control de Versiones | Git + GitHub |
+| Estado | Prototipo Funcional |
 ---
 
 # 🛠 Tecnologías Utilizadas
